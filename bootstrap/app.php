@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'has.old.password' => \App\Http\Middleware\HasOldPassword::class,
+            'user-has-role' => \App\Http\Middleware\UserHasRole::class,
+            'without.old.password' => \App\Http\Middleware\WithoutOldPassword::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
