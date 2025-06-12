@@ -1,0 +1,1 @@
+<span>{{ $probe->section->name }}</span>
