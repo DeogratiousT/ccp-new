@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Reading;
+use App\Models\Section;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Probe extends Model
 {

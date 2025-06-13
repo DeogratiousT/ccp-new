@@ -45,7 +45,7 @@
                                 <td>{{ $section->name }}</td>
                                 <td>{{ $section->slug }}</td>
                                 <td>
-                                    <a href="" class="btn icon btn-light">
+                                    <a href="{{ route('dashboard.sections.probes.index', $section) }}" class="btn icon btn-light">
                                         <i class="bi bi-eye-fill"></i>
                                     </a>
 

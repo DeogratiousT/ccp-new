@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\ProbeController;
 use App\Http\Controllers\Dashboard\SectionController;
 use App\Http\Controllers\Dashboard\ConditionController;
+use App\Http\Controllers\Dashboard\ReadingController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard.home');
@@ -25,9 +26,9 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
 
         Route::resource('users', UserController::class);
         
-        Route::resource('sections', SectionController::class);
-        Route::resource('probes', ProbeController::class);
         Route::resource('conditions', ConditionController::class);
-        Route::resource('readings', ConditionController::class);
+        Route::resource('sections', SectionController::class);
+        Route::resource('sections.probes', ProbeController::class);
+        Route::resource('readings', ReadingController::class);
     });
 });

@@ -7,49 +7,52 @@ use Illuminate\Http\Request;
 use App\DataTables\ProbesDataTable;
 use App\Http\Controllers\Controller;
 use App\Actions\Generate\UniqueStringGenerator;
+use App\Models\Section;
 
 class ProbeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(ProbesDataTable $dataTable)
+    public function index(Section $section)
     {
-        return $dataTable->render('dashboard.probes.index');
+        return view('dashboard.probes.index', [
+            'section' => $section,
+            'probes' => Probe::all()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Section $section)
     {
-        return view('dashboard.probes.create');
+        return view('dashboard.probes.create', [
+            'section' => $section
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Section $section)
     {
         $validated = $request->validate([
+            'uuid' => ['required', 'string'],
             'section_id' => ['required', 'integer'],
             'max_threshold' => ['required', 'string'],
             'min_threshold' => ['required', 'string'],
-            'description' => ['required', 'string']
+            'description' => ['nullable', 'string']
         ]);
-
-        // Generate UUID
-        $generator = new UniqueStringGenerator();
-        $validated['uuid'] = 'CCP/' . $generator->generate(4, false);
 
         try {
             Probe::create($validated);
 
-            return to_route('dashboard.probes.index')->with('success', 'Probe Added Successfully');
+            return redirect()->route('dashboard.sections.probes.index', $section)->with('success', 'Probe Added Successfully');
         } catch (\Throwable $th) {
             logger('Probe Add Failed: ' . $th->getMessage());
 
-            return to_route('dashboard.probes.index')->with('error', 'Something Went Wrong, Please Try Again Later');
+            return redirect()->route('dashboard.sections.probes.index', $section)->with('error', 'Something Went Wrong, Please Try Again Later');
         }
     }
 
@@ -57,25 +60,29 @@ class ProbeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Probe $probe)
+    public function show(Section $section, Probe $probe)
     {
-        return view('dashboard.probes.show', ['probe' => $probe]);
+        // 
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Probe $probe)
+    public function edit(Section $section, Probe $probe)
     {
-        return view('dashboard.probes.edit', ['probe' => $probe]);
+        return view('dashboard.probes.edit', [
+            'section' => $section,
+            'probe' => $probe
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Probe $probe)
+    public function update(Request $request, Section $section, Probe $probe)
     {
         $validated = $request->validate([
+            'uuid' => ['required', 'string'],
             'section_id' => ['required', 'integer'],
             'max_threshold' => ['required', 'string'],
             'min_threshold' => ['required', 'string'],
@@ -85,27 +92,27 @@ class ProbeController extends Controller
         try {
             $probe->update($validated);
 
-            return to_route('dashboard.probes.index')->with('success', 'Probe Updated Successfully');
+            return redirect()->route('dashboard.sections.probes.index', $section)->with('success', 'Probe Updated Successfully');
         } catch (\Throwable $th) {
             logger('Probe Update Failed: ' . $th->getMessage());
 
-            return to_route('dashboard.probes.index')->with('error', 'Something Went Wrong, Please Try Again Later');
+            return redirect()->route('dashboard.sections.probes.index', $section)->with('error', 'Something Went Wrong, Please Try Again Later');
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Probe $probe)
+    public function destroy(Section $section, Probe $probe)
     {
         try {
             $probe->delete();
 
-            return to_route('dashboard.probes.index')->with('success', 'Probe Deleted Succesfully');
+            return redirect()->route('dashboard.sections.probes.index', $section)->with('success', 'Probe Deleted Succesfully');
         } catch (\Throwable $th) {
             logger('Probe Delete Failed: ' . $th->getMessage());
 
-            return to_route('dashboard.probes.index')->with('error', 'Something Went Wrong, Please Try Again Later');
+            return redirect()->route('dashboard.sections.probes.index', $section)->with('error', 'Something Went Wrong, Please Try Again Later');
         }
     }
 }

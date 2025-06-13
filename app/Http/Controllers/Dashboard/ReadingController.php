@@ -13,9 +13,11 @@ class ReadingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(ReadingsDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render('dashboard.readings.index');
+        return view('dashboard.readings.index', [
+            'readings' => Reading::all()
+        ]);
     }
 
     /**
@@ -23,7 +25,7 @@ class ReadingController extends Controller
      */
     public function create()
     {
-        return view('dashboard.readings.create');
+        //
     }
 
     /**
@@ -31,21 +33,7 @@ class ReadingController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'probe_id' => ['required', 'integer'],
-            'value' => ['required', 'string'],
-            'time_stamp' => ['required', 'string']
-        ]);
-
-        try {
-            Reading::create($validated);
-
-            return to_route('dashboard.readings.index')->with('success', 'Reading Added Successfully');
-        } catch (\Throwable $th) {
-            logger('Reading Add Failed: ' . $th->getMessage());
-
-            return to_route('dashboard.readings.index')->with('error', 'Something Went Wrong, Please Try Again Later');
-        }
+        //
     }
 
 
@@ -54,7 +42,7 @@ class ReadingController extends Controller
      */
     public function show(Reading $reading)
     {
-        return view('dashboard.readings.show', ['reading' => $reading]);
+        //
     }
 
     /**
@@ -62,7 +50,7 @@ class ReadingController extends Controller
      */
     public function edit(Reading $reading)
     {
-        return view('dashboard.readings.edit', ['reading' => $reading]);
+        //
     }
 
     /**
@@ -70,21 +58,7 @@ class ReadingController extends Controller
      */
     public function update(Request $request, Reading $reading)
     {
-        $validated = $request->validate([
-            'probe_id' => ['required', 'integer'],
-            'value' => ['required', 'string'],
-            'time_stamp' => ['required', 'string']
-        ]);
-
-        try {
-            $reading->update($validated);
-
-            return to_route('dashboard.readings.index')->with('success', 'Reading Updated Successfully');
-        } catch (\Throwable $th) {
-            logger('Reading Update Failed: ' . $th->getMessage());
-
-            return to_route('dashboard.readings.index')->with('error', 'Something Went Wrong, Please Try Again Later');
-        }
+        //
     }
 
     /**
@@ -92,14 +66,6 @@ class ReadingController extends Controller
      */
     public function destroy(Reading $reading)
     {
-        try {
-            $reading->delete();
-
-            return to_route('dashboard.readings.index')->with('success', 'Reading Deleted Succesfully');
-        } catch (\Throwable $th) {
-            logger('Reading Delete Failed: ' . $th->getMessage());
-
-            return to_route('dashboard.readings.index')->with('error', 'Something Went Wrong, Please Try Again Later');
-        }
+        //
     }
 }

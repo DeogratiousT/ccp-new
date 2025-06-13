@@ -1,1 +1,0 @@
-<span>{{ $probe->probe->name }}</span>

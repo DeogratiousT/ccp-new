@@ -11,10 +11,10 @@
 
         <li class="sidebar-title">Probes</li>
 
-        <li class="sidebar-item @if(request()->routeIs('dashboard.sections*')) active @endif">
-            <a href="{{ route('dashboard.sections.index') }}" class="sidebar-link">
-              <i class="bi bi-building-gear"></i>
-              <span>Sections</span>
+        <li class="sidebar-item @if(request()->routeIs('dashboard.readings*')) active @endif">
+            <a href="{{ route('dashboard.readings.index') }}" class="sidebar-link">
+              <i class="bi bi-database"></i>
+              <span>Readings</span>
             </a>
         </li>
 
@@ -24,6 +24,13 @@
             <a href="{{ route('dashboard.users.index') }}" class="sidebar-link">
               <i class="bi bi-person-fill-gear"></i>
               <span>Users</span>
+            </a>
+        </li>
+
+        <li class="sidebar-item @if(request()->routeIs('dashboard.sections*')) active @endif">
+            <a href="{{ route('dashboard.sections.index') }}" class="sidebar-link">
+              <i class="bi bi-building-gear"></i>
+              <span>Sections</span>
             </a>
         </li>
 
