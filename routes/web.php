@@ -8,7 +8,7 @@ use App\Http\Controllers\Dashboard\SectionController;
 use App\Http\Controllers\Dashboard\ConditionController;
 
 Route::get('/', function () {
-    return to_route('dashboard.home');
+    return redirect()->route('dashboard.home');
 });
 
 Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(function () {

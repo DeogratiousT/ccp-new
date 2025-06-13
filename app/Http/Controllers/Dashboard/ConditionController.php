@@ -14,7 +14,9 @@ class ConditionController extends Controller
      */
     public function index(ConditionsDataTable $dataTable)
     {
-        return $dataTable->render('dashboard.conditions.index');
+        return view('dashboard.conditions.index', [
+            'conditions' => Condition::all()
+        ]);
     }
 
     /**
@@ -32,7 +34,7 @@ class ConditionController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string'],
-            'si_unit' => ['required', 'string']
+            'si_unit' => ['nullable', 'string']
         ]);
 
         try {
@@ -69,7 +71,7 @@ class ConditionController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string'],
-            'si_unit' => ['required', 'string']
+            'si_unit' => ['nullable', 'string']
         ]);
 
         try {

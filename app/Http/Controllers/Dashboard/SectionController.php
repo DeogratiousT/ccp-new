@@ -12,9 +12,11 @@ class SectionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(SectionsDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render('dashboard.sections.index');
+        return view('dashboard.sections.index', [
+            'sections' => Section::all()
+        ]);
     }
 
     /**
@@ -58,7 +60,9 @@ class SectionController extends Controller
      */
     public function edit(Section $section)
     {
-        return view('dashboard.sections.edit', ['section' => $section]);
+        return view('dashboard.sections.edit', [
+            'section' => $section
+        ]);
     }
 
     /**

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('si_unit');
+            $table->string('si_unit')->nullable();
             $table->timestamps();
         });
     }
