@@ -14,7 +14,14 @@ return new class extends Migration
         Schema::create('probes', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
-            $table->foreignId('section_id')->constrained()->onDelete('cascade');
+            $table->foreignId('section_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('condition_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('max_threshold');
             $table->string('min_threshold');
             $table->string('description');

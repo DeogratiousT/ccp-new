@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\DataTables\ProbesDataTable;
 use App\Http\Controllers\Controller;
 use App\Actions\Generate\UniqueStringGenerator;
+use App\Models\Condition;
 use App\Models\Section;
 
 class ProbeController extends Controller
@@ -28,7 +29,8 @@ class ProbeController extends Controller
     public function create(Section $section)
     {
         return view('dashboard.probes.create', [
-            'section' => $section
+            'section' => $section,
+            'conditions' => Condition::all()
         ]);
     }
 
@@ -40,6 +42,7 @@ class ProbeController extends Controller
         $validated = $request->validate([
             'uuid' => ['required', 'string'],
             'section_id' => ['required', 'integer'],
+            'condition_id' => ['required', 'integer'],
             'max_threshold' => ['required', 'string'],
             'min_threshold' => ['required', 'string'],
             'description' => ['nullable', 'string']
@@ -72,7 +75,8 @@ class ProbeController extends Controller
     {
         return view('dashboard.probes.edit', [
             'section' => $section,
-            'probe' => $probe
+            'probe' => $probe,
+            'conditions' => Condition::all()
         ]);
     }
 
@@ -84,6 +88,7 @@ class ProbeController extends Controller
         $validated = $request->validate([
             'uuid' => ['required', 'string'],
             'section_id' => ['required', 'integer'],
+            'condition_id' => ['required', 'integer'],
             'max_threshold' => ['required', 'string'],
             'min_threshold' => ['required', 'string'],
             'description' => ['required', 'string']

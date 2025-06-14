@@ -40,10 +40,10 @@
                         <tr class="fw-bolder fs-6 text-gray-800 px-7">
                             <th>#</th>
                             <th>UUID</th>
+                            <th>Condition</th>
                             <th>Section</th>
                             <th>Min Threshold</th>
                             <th>Max Threshold</th>
-                            <th>Description</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -52,11 +52,15 @@
                             <tr>
                                 <td></td>
                                 <td>{{ $probe->uuid }}</td>
+                                <td>{{ $probe->condition->name }}</td>
                                 <td>{{ $probe->section->name }}</td>
                                 <td>{{ $probe->min_threshold }}</td>
                                 <td>{{ $probe->max_threshold }}</td>
-                                <td>{{ $probe->description }}</td>
                                 <td>
+                                    <button class="btn icon btn-light" data-bs-toggle="modal" data-bs-target="#show-probe-{{ $probe->id }}-modal">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </button>
+
                                     <a href="{{ route('dashboard.sections.probes.edit', ['section'=>$section, 'probe'=>$probe]) }}" class="btn icon btn-primary" data-bs-toggle="tooltip" title="Edit Section">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
@@ -75,6 +79,28 @@
     </div> <!-- end card -->
 
     @foreach ($probes as $probe)
+    <!--start:: Show Modal -->
+        <div class="modal fade" tabindex="-1" id="show-probe-{{ $probe->id }}-modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ $probe->uuid }}</h4>
+
+                        <!--begin::Close-->
+                        <button class="btn icon btn-outline-light" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                        <!--end::Close-->
+                    </div>
+
+                    <div class="modal-body row">
+                        {{ $probe->description }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end:: Show Modal -->
+
         <!--start:: Delete Modal -->
         <div class="modal fade" tabindex="-1" id="delete-section-{{ $probe->id }}-modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">

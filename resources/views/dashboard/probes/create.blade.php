@@ -45,6 +45,22 @@
                 </div>
 
                 <div class="row mb-4">
+                    <div class="form-group col-12">
+                        <label class="form-label" for="condition_id">Condition</label>
+                        <select name="condition_id" id="condition_id" class="form-control @error('condition_id') is-invalid @enderror">
+                            <option disabled selected>Select Condition</option>
+                            @foreach ($conditions as $condition)
+                                <option value="{{ $condition->id }}" @if(old('condition_id') == $condition->id) selected @endif>{{ $condition->name }}</option>
+                            @endforeach
+                        </select>
+
+                        @error('condition_id')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="row mb-4">
                     <div class="form-group col-md-6">
                         <label class="form-label" for="min_threshold">Min Threshold</label>
                         <input type="text" name="min_threshold" id="min_threshold" class="form-control @error('min_threshold') is-invalid @enderror" value="{{ old('min_threshold') }}"/>
