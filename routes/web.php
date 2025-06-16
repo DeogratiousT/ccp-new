@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\ProbeController;
 use App\Http\Controllers\Dashboard\SectionController;
 use App\Http\Controllers\Dashboard\ConditionController;
+use App\Http\Controllers\Dashboard\ProcessingLineController;
 use App\Http\Controllers\Dashboard\ReadingController;
 
 Route::get('/', function () {
@@ -30,5 +31,6 @@ Route::middleware(['auth'])->prefix('dashboard')->name('dashboard.')->group(func
         Route::resource('sections', SectionController::class);
         Route::resource('sections.probes', ProbeController::class);
         Route::resource('readings', ReadingController::class);
+        Route::resource('processinglines', ProcessingLineController::class);
     });
 });

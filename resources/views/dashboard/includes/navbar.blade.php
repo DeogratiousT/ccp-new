@@ -41,6 +41,13 @@
             </a>
         </li>
 
+        <li class="sidebar-item @if(request()->routeIs('dashboard.processinglines*')) active @endif">
+            <a href="{{ route('dashboard.processinglines.index') }}" class="sidebar-link">
+              <i class="bi bi-card-checklist"></i>
+              <span>Processing Lines</span>
+            </a>
+        </li>
+
         {{-- <li class="sidebar-item has-sub">
             <a href="#" class="sidebar-link">
                 <i class="bi bi-stack"></i>

@@ -35,10 +35,10 @@
 
                 <div class="row mb-4">
                     <div class="form-group col-12">
-                        <label class="form-label" for="uuid">UUID</label>
-                        <input type="text" name="uuid" id="uuid" class="form-control @error('uuid') is-invalid @enderror" value="{{ old('uuid') }}"/>
+                        <label class="form-label" for="serial">Serial</label>
+                        <input type="text" name="serial" id="serial" class="form-control @error('serial') is-invalid @enderror" value="{{ old('serial') }}"/>
 
-                        @error('uuid')
+                        @error('serial')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
@@ -80,7 +80,7 @@
                     </div>
                 </div>
 
-                 <div class="row mb-4">
+                <div class="row mb-4">
                     <div class="form-group col-12">
                         <label class="form-label" for="description">Description</label>
                         <input type="text" name="description" id="description" class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}"/>

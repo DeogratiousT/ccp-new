@@ -1,33 +1,27 @@
 @extends('dashboard.layouts.main')
 
-@section('title','Probes')
+@section('title','Processing Lines')
 
 @section('page-imports')
     <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"/>
 @endsection
 
-@section('page-title', 'Probes')
+@section('page-title', 'Processing Lines')
 
 @section('breadcrumb')
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="{{ route('dashboard.home') }}">Dashboard</a>
         </li>
-        <li class="breadcrumb-item">
-            <a href="{{ route('dashboard.sections.index') }}">Sections</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="{{ route('dashboard.sections.probes.index', $section) }}">{{ $section->name }}</a>
-        </li>
         <li class="breadcrumb-item active" aria-current="page">
-            Probes
+            Processing Lines
         </li>
     </ol>
 @endsection
 
 @section('page-action')
-    <a href="{{ route('dashboard.sections.probes.create', $section) }}" class="btn btn-primary m-4">
-        <i class="bi bi-plus"></i> New Probe
+    <a href="{{ route('dashboard.processinglines.create') }}" class="btn btn-primary m-4">
+        <i class="bi bi-plus"></i> New ProcessingLine
     </a>
 @endsection
 
@@ -35,37 +29,29 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table" id="probes-table">
+                <table class="table" id="processing-lines-table">
                     <thead>
                         <tr class="fw-bolder fs-6 text-gray-800 px-7">
                             <th>#</th>
-                            <th>Serial</th>
-                            <th>Condition</th>
+                            <th>UUID</th>
                             <th>Section</th>
-                            <th>Min Threshold</th>
-                            <th>Max Threshold</th>
+                            <th>Description</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($probes as $index => $probe)
+                        @foreach ($processingLines as $index => $processingLine)
                             <tr>
                                 <td></td>
-                                <td>{{ $probe->serial }}</td>
-                                <td>{{ $probe->condition->name }}</td>
-                                <td>{{ $probe->section->name }}</td>
-                                <td>{{ $probe->min_threshold }}</td>
-                                <td>{{ $probe->max_threshold }}</td>
+                                <td>{{ $processingLine->uuid }}</td>
+                                <td>{{ $processingLine->section->name }}</td>
+                                <td>{{ $processingLine->description }}</td>
                                 <td>
-                                    <button class="btn icon btn-light" data-bs-toggle="modal" data-bs-target="#show-probe-{{ $probe->id }}-modal">
-                                        <i class="bi bi-eye-fill"></i>
-                                    </button>
-
-                                    <a href="{{ route('dashboard.sections.probes.edit', ['section'=>$section, 'probe'=>$probe]) }}" class="btn icon btn-primary" data-bs-toggle="tooltip" title="Edit Section">
+                                    <a href="{{ route('dashboard.processinglines.edit', ['processingline'=>$processingLine]) }}" class="btn icon btn-primary" data-bs-toggle="tooltip" title="Edit Section">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
 
-                                    <button class="btn icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete-section-{{ $probe->id }}-modal">
+                                    <button class="btn icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete-section-{{ $processingLine->id }}-modal">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                     
@@ -78,36 +64,13 @@
         </div> <!-- end card-body -->
     </div> <!-- end card -->
 
-    @foreach ($probes as $probe)
-    <!--start:: Show Modal -->
-        <div class="modal fade" tabindex="-1" id="show-probe-{{ $probe->id }}-modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">{{ $probe->uuid }}</h4>
-
-                        <!--begin::Close-->
-                        <button class="btn icon btn-outline-light" data-bs-dismiss="modal" aria-label="Close">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                        <!--end::Close-->
-                    </div>
-
-                    <div class="modal-body row">
-                        <h4 class="mb-2">{{ $probe->serial }}</h4>
-                        <p>{{ $probe->description }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--end:: Show Modal -->
-
+    @foreach ($processingLines as $processingLine)
         <!--start:: Delete Modal -->
-        <div class="modal fade" tabindex="-1" id="delete-section-{{ $probe->id }}-modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" tabindex="-1" id="delete-section-{{ $processingLine->id }}-modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Delete {{ $probe->name }}</h4>
+                        <h4 class="modal-title">Delete {{ $processingLine->name }}</h4>
 
                         <!--begin::Close-->
                         <button class="btn icon btn-outline-light" data-bs-dismiss="modal" aria-label="Close">
@@ -117,11 +80,11 @@
                     </div>
 
                     <div class="modal-body row">
-                        <form action="{{ route('dashboard.sections.probes.destroy', ['section'=>$section, 'probe'=>$probe]) }}" method="POST" id="delete-section-{{ $probe->id }}-form">
+                        <form action="{{ route('dashboard.processinglines.destroy', $processingLine) }}" method="POST" id="delete-section-{{ $processingLine->id }}-form">
                             @csrf
                             @method('DELETE')
 
-                            <p>Are you sure that you want to delete this Probe?</p>
+                            <p>Are you sure that you want to delete this Processing Line?</p>
 
                             <button type="submit" class="btn btn-danger" onclick="formSubmit(this)">
                                 <span class="indicator-label">Continue</span>
@@ -142,7 +105,7 @@
 @push('scripts')
     <script>
         $(document).ready(function () {
-            $('#probes-table').DataTable({
+            $('#processing-lines-table').DataTable({
                 "drawCallback": function (settings) {
                     var api = this.api();
                     var rows = api.rows({ page: 'current' }).nodes();

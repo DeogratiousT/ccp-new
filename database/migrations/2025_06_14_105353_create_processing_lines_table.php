@@ -11,21 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('probes', function (Blueprint $table) {
+        Schema::create('processing_lines', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
             $table->foreignId('section_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('condition_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-            $table->string('max_threshold');
-            $table->string('min_threshold');
-            $table->string('serial')->unique();
-            $table->string('description');
+            $table->mediumText('description');
             $table->timestamps();
         });
     }
@@ -35,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('probes');
+        Schema::dropIfExists('processing_lines');
     }
 };

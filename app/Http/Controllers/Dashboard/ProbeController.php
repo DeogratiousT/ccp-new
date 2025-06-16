@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Probe;
+use App\Models\Section;
+use App\Models\Condition;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\DataTables\ProbesDataTable;
 use App\Http\Controllers\Controller;
 use App\Actions\Generate\UniqueStringGenerator;
-use App\Models\Condition;
-use App\Models\Section;
 
 class ProbeController extends Controller
 {
@@ -40,13 +41,15 @@ class ProbeController extends Controller
     public function store(Request $request, Section $section)
     {
         $validated = $request->validate([
-            'uuid' => ['required', 'string'],
+            'serial' => ['required', 'string'],
             'section_id' => ['required', 'integer'],
             'condition_id' => ['required', 'integer'],
             'max_threshold' => ['required', 'string'],
             'min_threshold' => ['required', 'string'],
             'description' => ['nullable', 'string']
         ]);
+
+        $validated['uuid'] = (string) Str::uuid();
 
         try {
             Probe::create($validated);
@@ -86,7 +89,7 @@ class ProbeController extends Controller
     public function update(Request $request, Section $section, Probe $probe)
     {
         $validated = $request->validate([
-            'uuid' => ['required', 'string'],
+            'serial' => ['required', 'string'],
             'section_id' => ['required', 'integer'],
             'condition_id' => ['required', 'integer'],
             'max_threshold' => ['required', 'string'],
