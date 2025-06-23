@@ -39,7 +39,7 @@
                     <thead>
                         <tr class="fw-bolder fs-6 text-gray-800 px-7">
                             <th>#</th>
-                            <th>Serial</th>
+                            <th>RabbitMQ Queue</th>
                             <th>Condition</th>
                             <th>Section</th>
                             <th>Min Threshold</th>
@@ -51,7 +51,7 @@
                         @foreach ($probes as $index => $probe)
                             <tr>
                                 <td></td>
-                                <td>{{ $probe->serial }}</td>
+                                <td>{{ $probe->rabbitmq_queue }}</td>
                                 <td>{{ $probe->condition->name }}</td>
                                 <td>{{ $probe->section->name }}</td>
                                 <td>{{ $probe->min_threshold }}</td>

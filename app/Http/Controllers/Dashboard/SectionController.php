@@ -33,7 +33,8 @@ class SectionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string']
+            'name' => ['required', 'string'],
+            'rabbitmq_exchange' => ['required', 'string']
         ]);
 
         try {
@@ -71,7 +72,8 @@ class SectionController extends Controller
     public function update(Request $request, Section $section)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string']
+            'name' => ['required', 'string'],
+            'rabbitmq_exchange' => ['required', 'string']
         ]);
 
         try {

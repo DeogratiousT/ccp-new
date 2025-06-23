@@ -84,6 +84,7 @@ class SectionsDataTable extends DataTable
             Column::make('name')
                     ->addClass('ps-2'),
             Column::make('slug'),
+            Column::make('rabbitmq_exchange'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

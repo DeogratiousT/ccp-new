@@ -50,29 +50,13 @@ class RabbitMQService
 
     public function consume()
     {
-        // $connection = new AMQPStreamConnection(
-        //     env('MQ_HOST'),
-        //     env('MQ_PORT'),
-        //     env('MQ_USER'),
-        //     env('MQ_PASS'),
-        //     env('MQ_VHOST')
-        // );
         $connection = new AMQPStreamConnection(
-    env('MQ_HOST'),
-    env('MQ_PORT'),
-    env('MQ_USER'),
-    env('MQ_PASS'),
-    env('MQ_VHOST'),
-    false,    // insist
-    'AMQPLAIN', // login_method
-    null,     // login_response
-    'en_US',  // locale
-    10.0,     // connection_timeout
-    60.0,     // read_write_timeout (increase to 60s)
-    null,     // context
-    false,    // keepalive
-    0         // heartbeat
-);
+            env('MQ_HOST'),
+            env('MQ_PORT'),
+            env('MQ_USER'),
+            env('MQ_PASS'),
+            env('MQ_VHOST')
+        );
 
         logger('connected');
 

@@ -20,7 +20,7 @@ class ProbeController extends Controller
     {
         return view('dashboard.probes.index', [
             'section' => $section,
-            'probes' => Probe::all()
+            'probes' => $section->probes
         ]);
     }
 
@@ -41,11 +41,11 @@ class ProbeController extends Controller
     public function store(Request $request, Section $section)
     {
         $validated = $request->validate([
-            'serial' => ['required', 'string'],
+            'rabbitmq_queue' => ['required', 'string'],
             'section_id' => ['required', 'integer'],
             'condition_id' => ['required', 'integer'],
-            'max_threshold' => ['required', 'string'],
-            'min_threshold' => ['required', 'string'],
+            'max_threshold' => ['nullable', 'string'],
+            'min_threshold' => ['nullable', 'string'],
             'description' => ['nullable', 'string']
         ]);
 
@@ -89,11 +89,11 @@ class ProbeController extends Controller
     public function update(Request $request, Section $section, Probe $probe)
     {
         $validated = $request->validate([
-            'serial' => ['required', 'string'],
+            'rabbitmq_queue' => ['required', 'string'],
             'section_id' => ['required', 'integer'],
             'condition_id' => ['required', 'integer'],
-            'max_threshold' => ['required', 'string'],
-            'min_threshold' => ['required', 'string'],
+            'max_threshold' => ['nullable', 'string'],
+            'min_threshold' => ['nullable', 'string'],
             'description' => ['required', 'string']
         ]);
 

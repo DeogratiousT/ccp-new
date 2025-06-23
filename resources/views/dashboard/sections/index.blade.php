@@ -35,6 +35,8 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Slug</th>
+                            <th>RabbitMQ Exchange</th>
+                            <th>No. of Queues</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -44,6 +46,8 @@
                                 <td></td>
                                 <td>{{ $section->name }}</td>
                                 <td>{{ $section->slug }}</td>
+                                <td>{{ $section->rabbitmq_exchange }}</td>
+                                <td>{{ count($section->probes) }}</td>
                                 <td>
                                     <a href="{{ route('dashboard.sections.probes.index', $section) }}" class="btn icon btn-light">
                                         <i class="bi bi-eye-fill"></i>

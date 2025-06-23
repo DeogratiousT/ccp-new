@@ -22,9 +22,9 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('max_threshold');
-            $table->string('min_threshold');
-            $table->string('serial')->unique();
+            $table->string('max_threshold')->nullable();
+            $table->string('min_threshold')->nullable();
+            $table->string('rabbitmq_queue')->unique();
             $table->string('description');
             $table->timestamps();
         });

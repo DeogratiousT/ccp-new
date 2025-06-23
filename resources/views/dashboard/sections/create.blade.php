@@ -38,6 +38,17 @@
                     </div>
                 </div>
 
+                <div class="row mb-4">
+                    <div class="form-group col-12">
+                        <label class="form-label" for="rabbitmq_exchange">RabbitMQ Exchange</label>
+                        <input type="text" name="rabbitmq_exchange" id="rabbitmq_exchange" class="form-control @error('rabbitmq_exchange') is-invalid @enderror" value="{{ old('rabbitmq_exchange') }}"/>
+
+                        @error('rabbitmq_exchange')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="mb-4">
                     <button type="submit" id="kt_projects_submit" class="btn btn-primary" onclick="formSubmit(this)">
                         <span class="indicator-label">Continue</span>
