@@ -41,7 +41,7 @@ class ProbeController extends Controller
     public function store(Request $request, Section $section)
     {
         $validated = $request->validate([
-            'rabbitmq_queue' => ['required', 'string'],
+            'serial' => ['required', 'string'],
             'section_id' => ['required', 'integer'],
             'condition_id' => ['required', 'integer'],
             'max_threshold' => ['nullable', 'string'],
@@ -89,7 +89,7 @@ class ProbeController extends Controller
     public function update(Request $request, Section $section, Probe $probe)
     {
         $validated = $request->validate([
-            'rabbitmq_queue' => ['required', 'string'],
+            'serial' => ['required', 'string'],
             'section_id' => ['required', 'integer'],
             'condition_id' => ['required', 'integer'],
             'max_threshold' => ['nullable', 'string'],

@@ -34,7 +34,8 @@ class SectionController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string'],
-            'rabbitmq_exchange' => ['required', 'string']
+            'rabbitmq_exchange' => ['required', 'string'],
+            'rabbitmq_queue' => ['required', 'string']
         ]);
 
         try {
@@ -73,7 +74,8 @@ class SectionController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string'],
-            'rabbitmq_exchange' => ['required', 'string']
+            'rabbitmq_exchange' => ['required', 'string'],
+            'rabbitmq_queue' => ['required', 'string']
         ]);
 
         try {
