@@ -51,6 +51,17 @@
                     </div>
                 </div>
 
+                <div class="row mb-4">
+                    <div class="form-group col-12">
+                        <label class="form-label" for="rabbitmq_queue">RabbitMQ Queue</label>
+                        <input type="text" name="rabbitmq_queue" id="rabbitmq_queue" class="form-control @error('rabbitmq_queue') is-invalid @enderror" value="{{ $section->rabbitmq_queue }}"/>
+
+                        @error('rabbitmq_queue')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="mb-4">
                     <button type="submit" id="kt_projects_submit" class="btn btn-primary" onclick="formSubmit(this)">
                         <span class="indicator-label">Continue</span>

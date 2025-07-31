@@ -11,7 +11,7 @@ class Section extends Model
 {
     use HasFactory, HasSlug;
 
-    protected $fillable = ['name', 'slug', 'rabbitmq_exchange'];
+    protected $fillable = ['name', 'slug', 'rabbitmq_exchange', 'rabbitmq_queue'];
 
     /**
      * Get the options for generating the slug.

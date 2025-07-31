@@ -12,7 +12,7 @@ class Probe extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['uuid', 'section_id', 'condition_id', 'max_threshold', 'min_threshold', 'rabbitmq_queue', 'description'];
+    protected $fillable = ['uuid', 'serial', 'section_id', 'condition_id', 'max_threshold', 'min_threshold', 'description'];
 
     public function section()
     {

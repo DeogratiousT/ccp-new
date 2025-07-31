@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('rabbitmq_exchange')->unique();
+            $table->string('rabbitmq_exchange');
+            $table->string('rabbitmq_queue');
             $table->timestamps();
         });
     }

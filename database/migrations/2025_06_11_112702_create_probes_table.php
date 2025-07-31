@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('probes', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
+            $table->string('serial')->unique();
             $table->foreignId('section_id')
                 ->constrained()
                 ->onUpdate('cascade')
@@ -24,7 +25,6 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('max_threshold')->nullable();
             $table->string('min_threshold')->nullable();
-            $table->string('rabbitmq_queue')->unique();
             $table->string('description');
             $table->timestamps();
         });

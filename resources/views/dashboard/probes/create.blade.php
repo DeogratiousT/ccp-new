@@ -35,10 +35,10 @@
 
                 <div class="row mb-4">
                     <div class="form-group col-12">
-                        <label class="form-label" for="rabbitmq_queue">RabbitMQ Queue</label>
-                        <input type="text" name="rabbitmq_queue" id="rabbitmq_queue" class="form-control @error('rabbitmq_queue') is-invalid @enderror" value="{{ old('rabbitmq_queue') }}"/>
+                        <label class="form-label" for="serial">Serial</label>
+                        <input type="text" name="serial" id="serial" class="form-control @error('serial') is-invalid @enderror" value="{{ old('serial') }}"/>
 
-                        @error('rabbitmq_queue')
+                        @error('serial')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>

@@ -31,29 +31,36 @@ class ProbeReadingConsume extends Command
             $mqService = new RabbitMQService();
 
             $mqService->setCallback(function($msg) {
-                $message = json_decode($msg, true)[0];
+                logger('Raw message body: ' . $msg);
 
-                logger('consumer hapa');
-                logger($message);
+                $data = json_decode($msg, true);
 
-                $location = SensorLocation::where('uuid', $message['probeID'])->firstOrFail();
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    logger('Invalid JSON: ' . json_last_error_msg());
+                    return;
+                }
 
-                $data = [
-                    'date' => now()->toDateString(),
-                    'time' => now()->toTimeString(),
-                    'value' => $message['param'],
-                ];
-                
-                $data['probe_id'] = $location->probe_id;
-                $data['sensor_location_id'] = $location->id;
-                $data['slug'] = $location->slug;
+                if (is_array($data)) {
+                    // If it's a list (numeric array) and has index 0
+                    if (array_key_exists(0, $data)) {
+                        $message = $data[0];
+                    } else {
+                        // Otherwise treat the whole array as the message
+                        $message = $data;
+                    }
 
-                ProbeReadingsReceived::dispatch($data);
+                    logger('Processed message: ' . json_encode($message));
+
+                    // Dispatch event here if needed
+                    // ProbeReadingsReceived::dispatch($message);
+                } else {
+                    logger('Unexpected message format: ' . var_export($data, true));
+                }
             });
 
             $mqService->consume();  
         } catch (\Throwable $th) {
-            logger($th->getMessage());
+            logger('Consumer error: ' . $th->getMessage());
         }      
     }
 }

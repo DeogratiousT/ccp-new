@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Section;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
@@ -14,86 +15,58 @@ class RabbitMQService
         $this->callback = $callback;
     }
 
-    public function publish($message)
-    {
-        
-        $connection = new AMQPStreamConnection(env('MQ_HOST'), env('MQ_PORT'), env('MQ_USER'), env('MQ_PASS'), env('MQ_VHOST'));
-        $channel = $connection->channel();
-        $channel->exchange_declare('DryerExchange', 'direct', false, false, false);
-        $channel->queue_declare('DryerQueue', false, false, false, false);
-        $channel->queue_bind('DryerQueue', 'DryerExchange', 'test_key');
-        $msg = new AMQPMessage($message);
-        $channel->basic_publish($msg, 'DryerExchange', 'test_key');
-        logger(" [x] Sent $message to DryerExchange / DryerQueue.\n");
-        $channel->close();
-        $connection->close();
-    }
-
-    // public function consume()
-    // {
-    //     $connection = new AMQPStreamConnection(env('MQ_HOST'), env('MQ_PORT'), env('MQ_USER'), env('MQ_PASS'), env('MQ_VHOST'));
-    //     $channel = $connection->channel();
-    //     $callback = function ($msg) {
-    //         if ($this->callback) {
-    //             call_user_func($this->callback, $msg->body);
-    //         }
-    //     };
-    //     $channel->queue_declare('DryerQueue', false, false, false, false);
-    //     $channel->basic_consume('DryerQueue', '', false, false, false, false, $callback);
-    //     echo 'Waiting for new message on DryerQueue', " \n";
-    //     while ($channel->is_consuming()) {
-    //         $channel->wait();
-    //     }
-    //     $channel->close();
-    //     $connection->close();
-    // }
-
     public function consume()
     {
-        $connection = new AMQPStreamConnection(
-            env('MQ_HOST'),
-            env('MQ_PORT'),
-            env('MQ_USER'),
-            env('MQ_PASS'),
-            env('MQ_VHOST')
-        );
+        try {
+            $connection = new AMQPStreamConnection(
+                env('MQ_HOST'),
+                env('MQ_PORT'),
+                env('MQ_USER'),
+                env('MQ_PASS')
+            );
 
-        logger('connected');
+            $channel = $connection->channel();
 
-        $channel = $connection->channel();
+            logger('Connected to RabbitMQ');
 
-        // Define exchanges and their queues
-        $exchanges = [
-            'DryerExchange' => ['D01', 'D02', 'D03', 'D04', 'D05', 'D06'],
-            'CFUExchange'   => ['CFU01', 'CFU02', 'CFU03', 'CFU04', 'CFU05', 'CFU06', 'CFU07', 'CFU08', 'CFU09', 'CFU10'],
-        ];
-
-        // Set callback
-        $callback = function ($msg) {
-            if ($this->callback) {
-                call_user_func($this->callback, $msg->body);
+            // Load exchanges from database
+            $exchanges = [];
+            $sections = Section::all();
+            foreach ($sections as $section) {
+                if ($section->rabbitmq_exchange) {
+                    $exchanges[] = $section->rabbitmq_exchange;
+                }
             }
-        };
 
-        // Declare and bind all queues
-        foreach ($exchanges as $exchange => $queues) {
-            $channel->exchange_declare($exchange, 'direct', false, true, false);
+            logger('Exchanges: ' . json_encode($exchanges));
 
-            foreach ($queues as $queue) {
-                $channel->queue_declare($queue, false, true, false, false);
-                $channel->queue_bind($queue, $exchange, $queue);
-                $channel->basic_consume($queue, '', false, true, false, false, $callback);
+            // Set callback
+            $callback = function ($msg) {
+                if ($this->callback) {
+                    call_user_func($this->callback, $msg->body);
+                }
+            };
+
+            // Declare and bind all queues
+            foreach ($exchanges as $exchange) {
+                $channel->exchange_declare($exchange, 'direct', false, true, false);
+                $channel->queue_declare($exchange, false, true, false, false);
+                $channel->queue_bind($exchange, $exchange, $exchange);
+                $channel->basic_consume($exchange, '', false, true, false, false, $callback);
+                logger("Subscribed to: $exchange");
             }
+
+            echo "Waiting for messages on multiple queues...\n";
+
+            while ($channel->is_consuming()) {
+                $channel->wait();
+            }
+
+            $channel->close();
+            $connection->close();
+
+        } catch (\Exception $e) {
+            logger('RabbitMQ connection error: ' . $e->getMessage());
         }
-
-        echo "Waiting for messages on multiple queues...\n";
-
-        // Start consuming
-        while ($channel->is_consuming()) {
-            $channel->wait();
-        }
-
-        $channel->close();
-        $connection->close();
     }
 }
